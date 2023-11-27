@@ -1,4 +1,4 @@
-// import React from "react";
+import React from "react";
 import {
   Container,
   Card,
@@ -6,8 +6,7 @@ import {
   Row,
   Col
 } from 'react-bootstrap';
-
-import { useQuery, useMutation } from "@apollo/client";
+import { useQuery, useMutation } from "@apollo/react-hooks";
 
 import Auth from "../utils/auth";
 import { removeBookId } from "../utils/localStorage";
