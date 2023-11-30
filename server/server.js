@@ -15,7 +15,7 @@ const PORT = process.env.PORT || 3001;
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  context: authMiddleware,
+  //context: authMiddleware,
 });
 
 // integrate our Apollo server with the Express application as middleware
@@ -28,11 +28,11 @@ const startApolloServer = async () => {
   app.use(express.urlencoded({ extended: true }));
   app.use(express.json());
 
-  app.use('/graphql', expressMiddleware(server));
+  //app.use('/graphql', expressMiddleware(server));
 
-  // app.use('/graphql', expressMiddleware(server, {
-  //   context: authMiddleware
-  // }))
+  app.use('/graphql', expressMiddleware(server, {
+    context: authMiddleware
+  }))
 
   // if we're in production, serve client/build as static assets
   if (process.env.NODE_ENV === 'production') {

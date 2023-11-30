@@ -44,9 +44,9 @@ const SearchBooks = () => {
         `https://www.googleapis.com/books/v1/volumes?q=${searchInput}`
       );
 
-      if (!response.ok) {
-        throw new Error('something went wrong!');
-      }
+      // if (!response.ok) {
+      //   throw new Error('something went wrong!');
+      // }
 
       const { items } = await response.json();
 
@@ -82,9 +82,9 @@ const SearchBooks = () => {
         variables: { bookData: { ...bookToSave }},
       });
 
-      if (!response.ok) {
-        throw new Error('something went wrong!');
-      }
+      // if (!response.ok) {
+      //   throw new Error('something went wrong!');
+      // }
 
       // if book successfully saves to user's account, save book id to state
       setSavedBookIds([...savedBookIds, bookToSave.bookId]);
