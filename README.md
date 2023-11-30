@@ -1,20 +1,19 @@
-# 21 MERN: Book Search Engine
+# Book Search Engine
 
-## Your Task
+## Description
 
-Your assignment this week is emblematic of the fact that most modern websites are driven by two things: data and user demands. This shouldn't come as a surprise, as the ability to personalize user data is the cornerstone of real-world web development today. And as user demands evolve, applications need to be more performant.
+My assignment is emblematic of the fact that most modern websites are driven by two things: data and user demands. This shouldn't come as a surprise, as the ability to personalize user data is the cornerstone of real-world web development today. And as user demands evolve, applications need to be more performant.
 
-This week, you’ll take starter code with a fully functioning Google Books API search engine built with a RESTful API, and refactor it to be a GraphQL API built with Apollo Server. The app was built using the MERN stack with a React front end, MongoDB database, and Node.js/Express.js server and API. It's already set up to allow users to save book searches to the back end.
+My app will be using GraphQL API built with Apollo Serverwas, and I will be using the MERN stack with a React front end, MongoDB database, and Node.js/Express.js server and API. 
 
-To complete the assignment, you’ll need to do the following:
-
-1. Set up an Apollo Server to use GraphQL queries and mutations to fetch and modify data, replacing the existing RESTful API.
-
-2. Modify the existing authentication middleware so that it works in the context of a GraphQL API.
-
-3. Create an Apollo Provider so that requests can communicate with an Apollo Server.
-
-4. Deploy your application to Heroku with a MongoDB database using MongoDB Atlas. Use the [Deploy with Heroku and MongoDB Atlas](https://coding-boot-camp.github.io/full-stack/mongodb/deploy-with-heroku-and-mongodb-atlas) walkthrough for instructions.
+## Table of Contents 
+- [User Story](#user-story)
+- [Acceptance Criteria](#acceptance-criteria)
+- [Mock-Up](#mock-up)
+- [Installation](#installation)
+- [Contributing](#contributing)
+- [Questions](#questions)
+- [Links](#links)
 
 ## User Story
 
@@ -74,113 +73,42 @@ A user can view their saved books on a separate page, as shown in the following 
 
 ![The Viewing Lernantino's Books page shows the books that the user Lernaninto has saved.](./assets/03.gif)
 
-## Getting Started
+## Installation
 
-In order for this application to use a GraphQL API, you’ll need to refactor the API to use GraphQL on the back end and add some functionality to the front end. The following sections contain details about the files you’ll need to modify on the back end and the front end.
+1. Download the zip file and copy it to a directory of your choice or clone to a directory of your choice using your terminal. 
+2. Open the file in VS Code or any editor you prefer.
+3. Open the terminal in VS Code and make sure you’re in the correct directory.
+4. Create a `.gitignore` file and include `node_modules/`, `.env/` and `.DS_Store/` so that your `node_modules` directory isn't tracked or uploaded to GitHub. Be sure to create your `.gitignore` file before installing any npm dependencies.
+5. Make sure that your repo includes a `package.json` with the required dependencies. You can create one by running `npm init` when you first set up the project, before installing any dependencies.
+6. Ensure inquirer is installed [Inquirer package](https://www.npmjs.com/package/inquirer/v/8.2.4). Run `npm i` to install dependencies in local project directory.
+7. Run `npm run develop` to start a server and your app.
 
-**Important**: Make sure to study the application before building upon it. Better yet, start by making a copy of it. It's already a working application&mdash;you're converting it from RESTful API practices to a GraphQL API.
+## Contributing
 
-### Back-End Specifications
+Any Contribution is more than welcome!
 
-You’ll need to complete the following tasks in each of these back-end files:
+## Questions
 
-* `auth.js`: Update the auth middleware function to work with the GraphQL API.
+If you have any question, Email me at: yana.mishina.92@gmail.com
 
-* `server.js`: Implement the Apollo Server and apply it to the Express server as middleware.
+Find me on GitHub: [Ymishyna](https://github.com/Ymishyna)
 
-* `Schemas` directory:
+## Links 
 
-  * `index.js`: Export your typeDefs and resolvers.
+The URL of the functional, deployed application.
 
-  * `resolvers.js`: Define the query and mutation functionality to work with the Mongoose models.
+[Deployed Site: https://656693ad2df841235e32b128--yanamishynaportfolio.netlify.app/](https://656693ad2df841235e32b128--yanamishynaportfolio.netlify.app/) 
 
-  **Hint**: Use the functionality in the `user-controller.js` as a guide.
+The URL of the GitHub repository, with a unique name and a README that describes the project.
 
-  * `typeDefs.js`: Define the necessary `Query` and `Mutation` types:
+[GitHub repository: https://github.com/Ymishyna/React-Portfolio](https://github.com/Ymishyna/React-Portfolio)
 
-    * `Query` type:
 
-      * `me`: Which returns a `User` type.
-  
-    * `Mutation` type:
 
-      * `login`: Accepts an email and password as parameters; returns an `Auth` type.
 
-      * `addUser`: Accepts a username, email, and password as parameters; returns an `Auth` type.
 
-      * `saveBook`: Accepts a book author's array, description, title, bookId, image, and link as parameters; returns a `User` type. (Look into creating what's known as an `input` type to handle all of these parameters!)
 
-      * `removeBook`: Accepts a book's `bookId` as a parameter; returns a `User` type.
 
-    * `User` type:
-
-      * `_id`
-
-      * `username`
-
-      * `email`
-
-      * `bookCount`
-
-      * `savedBooks` (This will be an array of the `Book` type.)
-
-    * `Book` type:
-
-      * `bookId` (Not the `_id`, but the book's `id` value returned from Google's Book API.)
-
-      * `authors` (An array of strings, as there may be more than one author.)
-
-      * `description`
-
-      * `title`
-
-      * `image`
-
-      * `link`
-
-    * `Auth` type:
-
-      * `token`
-
-      * `user` (References the `User` type.)
-
-### Front-End Specifications
-
-You'll need to create the following front-end files:
-
-* `queries.js`: This will hold the query `GET_ME`, which will execute the `me` query set up using Apollo Server.
-
-* `mutations.js`:
-
-  * `LOGIN_USER` will execute the `loginUser` mutation set up using Apollo Server.
-
-  * `ADD_USER` will execute the `addUser` mutation.
-
-  * `SAVE_BOOK` will execute the `saveBook` mutation.
-
-  * `REMOVE_BOOK` will execute the `removeBook` mutation.
-
-Additionally, you’ll need to complete the following tasks in each of these front-end files:
-
-* `App.jsx`: Create an Apollo Provider to make every request work with the Apollo Server.
- 
-* `SearchBooks.jsx`:
-
-  * Use the Apollo `useMutation()` Hook to execute the `SAVE_BOOK` mutation in the `handleSaveBook()` function instead of the `saveBook()` function imported from the `API` file.
-
-  * Make sure you keep the logic for saving the book's ID to state in the `try...catch` block!
-
-* `SavedBooks.jsx`:
-
-  * Remove the `useEffect()` Hook that sets the state for `UserData`.
-
-  * Instead, use the `useQuery()` Hook to execute the `GET_ME` query on load and save it to a variable named `userData`.
-
-  * Use the `useMutation()` Hook to execute the `REMOVE_BOOK` mutation in the `handleDeleteBook()` function instead of the `deleteBook()` function that's imported from `API` file. (Make sure you keep the `removeBookId()` function in place!)
-
-* `SignupForm.jsx`: Replace the `addUser()` functionality imported from the `API` file with the `ADD_USER` mutation functionality.
-
-* `LoginForm.jsx`: Replace the `loginUser()` functionality imported from the `API` file with the `LOGIN_USER` mutation functionality.
 
 ## Grading Requirements
 
