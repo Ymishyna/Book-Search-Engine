@@ -23,6 +23,7 @@ const SavedBooks = () => {
 
   // create function that accepts the book's mongo _id value as param and deletes the book from the database
   const handleDeleteBook = async (bookId) => {
+    console.log(bookId)
     const token = Auth.loggedIn() ? Auth.getToken() : null;
 
     if (!token) {
@@ -30,7 +31,7 @@ const SavedBooks = () => {
     }
 
     try {
-      await removeBook({
+        const { data } = await removeBook({
         variables: { bookId },
       });
 
@@ -48,7 +49,7 @@ const SavedBooks = () => {
 
   return (
     <>
-      <div fluid className="text-light bg-dark p-5">
+      <div className="text-light bg-dark p-5">
         <Container>
           <h1>Viewing saved books!</h1>
         </Container>
@@ -61,6 +62,7 @@ const SavedBooks = () => {
         </h2>
         <Row>
           {userData.savedBooks.map((book) => {
+            console.log(book)
             return (
               <Col md="4">
                 <Card key={book.bookId} border='dark'>
