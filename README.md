@@ -97,11 +97,11 @@ Find me on GitHub: [Ymishyna](https://github.com/Ymishyna)
 
 The URL of the functional, deployed application.
 
-[Deployed Site: https://656693ad2df841235e32b128--yanamishynaportfolio.netlify.app/](https://656693ad2df841235e32b128--yanamishynaportfolio.netlify.app/) 
+[Deployed Site: https://book-search-engine-by-yana-a765e739481f.herokuapp.com/](https://book-search-engine-by-yana-a765e739481f.herokuapp.com/) 
 
 The URL of the GitHub repository, with a unique name and a README that describes the project.
 
-[GitHub repository: https://github.com/Ymishyna/React-Portfolio](https://github.com/Ymishyna/React-Portfolio)
+[GitHub repository: https://github.com/Ymishyna/Book-Search-Engine](https://github.com/Ymishyna/Book-Search-Engine)
 
 
 
