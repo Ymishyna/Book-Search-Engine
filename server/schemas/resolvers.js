@@ -37,11 +37,11 @@ const resolvers = {
       const token = signToken(user);
       return { token, user };
     },
-    saveBook: async (parent, { bookData }, context) => {
+    saveCocktail: async (parent, { cocktailData }, context) => {
       if (context.user) {
         const updatedUser = await User.findByIdAndUpdate(
           { _id: context.user._id },
-          { $push: { savedBooks: bookData } },
+          { $push: { savedCocktails: cocktailData } },
           { new: true }
         );
 
@@ -50,11 +50,11 @@ const resolvers = {
 
       throw AuthenticationError;
     },
-    removeBook: async (parent, { bookId }, context) => {
+    removeCocktail: async (parent, { cocktailId }, context) => {
       if (context.user) {
         const updatedUser = await User.findOneAndUpdate(
           { _id: context.user._id },
-          { $pull: { savedBooks: { bookId } } },
+          { $pull: { savedCocktails: { cocktailId } } },
           { new: true }
         );
 

@@ -8,19 +8,19 @@ import {
 
 import { useQuery, useMutation } from '@apollo/client';
 import { QUERY_ME } from '../utils/queries';
-import { REMOVE_BOOK } from '../utils/mutations';
-import { removeBookId } from '../utils/localStorage';
+import { REMOVE_COCKTAIL } from '../utils/mutations';
+import { removeCocktailId } from '../utils/localStorage';
 
 import Auth from '../utils/auth';
 
-const SavedBooks = () => {
+const SavedCocktails = () => {
   const { loading, data } = useQuery(QUERY_ME);
-  const [removeBook, { error }] = useMutation(REMOVE_BOOK);
+  const [removeCocktail, { error }] = useMutation(REMOVE_COCKTAIL);
 
   const userData = data?.me || {};
 
   // create function that accepts the book's mongo _id value as param and deletes the book from the database
-  const handleDeleteBook = async (bookId) => {
+  const handleDeleteCocktail = async (cocktailId) => {
     // get token
     const token = Auth.loggedIn() ? Auth.getToken() : null;
 
@@ -29,12 +29,12 @@ const SavedBooks = () => {
     }
 
     try {
-      const { data } = await removeBook({
-        variables: { bookId },
+      const { data } = await removeCocktail({
+        variables: { cocktailId },
       });
 
       // upon success, remove book's id from localStorage
-      removeBookId(bookId);
+      removeCocktailId(cocktailId);
     } catch (err) {
       console.error(err);
     }
@@ -48,38 +48,40 @@ const SavedBooks = () => {
     <>
       <div fluid className="text-light bg-dark p-5">
         <Container>
-          <h1>Viewing {userData.username}'s books!</h1>
+          <h1>Viewing {userData.username}'s saved cocktails!</h1>
         </Container>
       </div>
       <Container>
         <h2 className='pt-5'>
-          {userData.savedBooks?.length
-            ? `Viewing ${userData.savedBooks.length} saved ${userData.savedBooks.length === 1 ? 'book' : 'books'
+          {userData.savedCocktails?.length
+            ? `Viewing ${userData.savedCocktails.length} saved ${userData.savedCocktails.length === 1 ? 'cocktail' : 'cocktails'
             }:`
-            : 'You have no saved books!'}
+            : 'You have no saved cocktails!'}
         </h2>
         <div>
           <Row>
-            {userData.savedBooks?.map((book) => {
+            {userData.savedCocktails?.map((cocktail) => {
               return (
                 <Col md="4">
-                  <Card key={book.bookId} border="dark">
-                    {book.image ? (
+                  <Card key={cocktail.cocktailId} border="dark">
+                    {cocktail.image ? (
                       <Card.Img
-                        src={book.image}
-                        alt={`The cover for ${book.title}`}
+                        src={cocktail.image}
+                        alt={`The image for ${cocktail.name}`}
                         variant="top"
                       />
                     ) : null}
                     <Card.Body>
-                      <Card.Title>{book.title}</Card.Title>
-                      <p className="small">Authors: {book.authors}</p>
-                      <Card.Text>{book.description}</Card.Text>
+                      <Card.Title>{cocktail.title}</Card.Title>
+                      <p className="small">Category: {cocktail.category}</p>
+                      <p className="small">Alcoholic: {cocktail.alcoholic}</p>
+                      <p className="small">Glass: {cocktail.glass}</p>
+                      <Card.Text>{cocktail.instructions}</Card.Text>
                       <Button
                         className="btn-block btn-danger"
-                        onClick={() => handleDeleteBook(book.bookId)}
+                        onClick={() => handleDeleteCocktail(cocktail.cocktailId)}
                       >
-                        Delete this Book!
+                        Delete this Cocktail!
                       </Button>
                     </Card.Body>
                   </Card>
@@ -93,4 +95,4 @@ const SavedBooks = () => {
   );
 };
 
-export default SavedBooks;
+export default SavedCocktails;

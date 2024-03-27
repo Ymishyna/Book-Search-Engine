@@ -3,17 +3,24 @@ const typeDefs = `
     _id: ID!
     username: String!
     email: String
-    bookCount: Int
-    savedBooks: [Book]
+    cocktailCount: Int
+    savedCocktails: [Cocktail]
   }
 
-  type Book {
-    bookId: ID!
-    authors: [String]
-    description: String
+  type Cocktail {
+    cocktailId: ID!
+    name: String!
+    category: String
+    alcoholic: Boolean
+    glass: String
+    instructions: String
+    ingredients: [Ingredient]
     image: String
-    link: String
-    title: String!
+  }
+
+  type Ingredient {
+    name: String!
+    measurement: String
   }
 
   type Auth {
@@ -21,13 +28,19 @@ const typeDefs = `
     user: User
   }
 
-  input BookInput {
-    authors: [String]
-    description: String!
-    bookId: String!
+  input CocktailInput {
+    name: String!
+    category: String
+    alcoholic: Boolean!
+    glass: String
+    instructions: String
+    ingredients: [IngredientInput]
     image: String
-    link: String
-    title: String!
+  }
+
+  input IngredientInput {
+    name: String!
+    measurement: String
   }
 
   type Query {
@@ -37,8 +50,8 @@ const typeDefs = `
   type Mutation {
     login(email: String!, password: String!): Auth
     addUser(username: String!, email: String!, password: String!): Auth
-    saveBook(bookData: BookInput!): User
-    removeBook(bookId: ID!): User
+    saveCocktail(cocktailData: CocktailInput!): User
+    removeCocktail(cocktailId: ID!): User
   }
 `;
 
