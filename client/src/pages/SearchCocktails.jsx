@@ -9,9 +9,9 @@ import {
 } from 'react-bootstrap';
 
 import { useMutation } from '@apollo/client';
-// import { SAVE_BOOK } from '../utils/mutations';
+// import { COCKTAIL } from '../utils/mutations';
 import { SAVE_COCKTAIL } from '../utils/mutations'; 
-// import { saveBookIds, getSavedBookIds } from '../utils/localStorage';
+// import { saveCocktailIds, getSavedCocktailIds } from '../utils/localStorage';
 import { saveCocktailIds, getSavedCocktailIds } from '../utils/localStorage'; 
 
 import Auth from '../utils/auth';
@@ -22,18 +22,18 @@ const SearchCocktails = () => {
   // create state for holding our search field data
   const [searchInput, setSearchInput] = useState('');
 
-  // create state to hold saved bookId values
+  // create state to hold saved cocktailId values
   const [savedCocktailIds, setSavedCocktailIds] = useState(getSavedCocktailIds());
 
   const [saveCocktail, { error }] = useMutation(SAVE_COCKTAIL);
 
-  // set up useEffect hook to save `savedBookIds` list to localStorage on component unmount
+  // set up useEffect hook to save `savedCocktailIds` list to localStorage on component unmount
   // learn more here: https://reactjs.org/docs/hooks-effect.html#effects-with-cleanup
   useEffect(() => {
     return () => saveCocktailIds(savedCocktailIds);
   });
 
-  // create method to search for books and set state on form submit
+  // create method to search for cocktails and set state on form submit
   const handleFormSubmit = async (event) => {
     event.preventDefault();
 
@@ -75,9 +75,9 @@ const SearchCocktails = () => {
     }
   };
 
-  // create function to handle saving a book to our database
+  // create function to handle saving a cocktail to our database
   const handleSaveCocktail = async (cocktailId) => {
-    // find the book in `searchedBooks` state by the matching id
+    // find the cocktail in `searchedCocktails` state by the matching id
     const cocktailToSave = searchedCocktails.find((cocktail) => cocktail.cocktailId === cocktailId);
 
     // get token

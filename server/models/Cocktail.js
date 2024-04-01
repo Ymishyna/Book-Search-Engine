@@ -1,6 +1,6 @@
 const { Schema } = require('mongoose');
 
-// This is a subdocument schema, it won't become its own model but we'll use it as the schema for the User's `savedBooks` array in User.js
+// This is a subdocument schema, it won't become its own model but we'll use it as the schema for the User's `savedCocktails` array in User.js
 const cocktailSchema = new Schema({
   authors: [
     {
@@ -11,7 +11,7 @@ const cocktailSchema = new Schema({
     type: String,
     required: true,
   },
-  // saved book id from GoogleBooks
+  // saved cocktail id from GoogleCocktails
   cocktailId: {
     type: String,
     required: true,

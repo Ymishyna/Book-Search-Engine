@@ -19,7 +19,7 @@ const SavedCocktails = () => {
 
   const userData = data?.me || {};
 
-  // create function that accepts the book's mongo _id value as param and deletes the book from the database
+  // create function that accepts the cocktail's mongo _id value as param and deletes the cocktail from the database
   const handleDeleteCocktail = async (cocktailId) => {
     // get token
     const token = Auth.loggedIn() ? Auth.getToken() : null;
@@ -33,7 +33,7 @@ const SavedCocktails = () => {
         variables: { cocktailId },
       });
 
-      // upon success, remove book's id from localStorage
+      // upon success, remove cocktail's id from localStorage
       removeCocktailId(cocktailId);
     } catch (err) {
       console.error(err);
