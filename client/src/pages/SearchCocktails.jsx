@@ -9,31 +9,20 @@ import {
 } from 'react-bootstrap';
 
 import { useMutation } from '@apollo/client';
-// import { COCKTAIL } from '../utils/mutations';
-import { SAVE_COCKTAIL } from '../utils/mutations'; 
-// import { saveCocktailIds, getSavedCocktailIds } from '../utils/localStorage';
-import { saveCocktailIds, getSavedCocktailIds } from '../utils/localStorage'; 
-
+import { SAVE_COCKTAIL } from '../utils/mutations';
+import { saveCocktailIds, getSavedCocktailIds } from '../utils/localStorage';
 import Auth from '../utils/auth';
 
 const SearchCocktails = () => {
-  // create state for holding returned google api data
   const [searchedCocktails, setSearchedCocktails] = useState([]);
-  // create state for holding our search field data
   const [searchInput, setSearchInput] = useState('');
-
-  // create state to hold saved cocktailId values
   const [savedCocktailIds, setSavedCocktailIds] = useState(getSavedCocktailIds());
-
   const [saveCocktail, { error }] = useMutation(SAVE_COCKTAIL);
 
-  // set up useEffect hook to save `savedCocktailIds` list to localStorage on component unmount
-  // learn more here: https://reactjs.org/docs/hooks-effect.html#effects-with-cleanup
   useEffect(() => {
     return () => saveCocktailIds(savedCocktailIds);
-  });
+  }, [savedCocktailIds]);
 
-  // create method to search for cocktails and set state on form submit
   const handleFormSubmit = async (event) => {
     event.preventDefault();
 
@@ -52,8 +41,10 @@ const SearchCocktails = () => {
 
       const { drinks } = await response.json();
 
+      console.log("Data fetched from API:", drinks); // Log data fetched from API
+
       const cocktailData = drinks.map((cocktail) => ({
-        cocktailId: cocktail.idDrink,
+        cocktailId: cocktail.idDrink || '', // Add null check here
         name: cocktail.strDrink,
         category: cocktail.strCategory,
         alcoholic: cocktail.strAlcoholic === "Alcoholic",
@@ -61,12 +52,18 @@ const SearchCocktails = () => {
         instructions: cocktail.strInstructions,
         image: cocktail.strDrinkThumb || '',
         ingredients: [
-          cocktail.strIngredient1,
-          cocktail.strIngredient2,
-          cocktail.strIngredient3,
-          // Add more ingredients as needed
-        ].filter(Boolean),
+          {name: cocktail.strIngredient0, measurement: null},
+          {name: cocktail.strIngredient1, measurement: null},
+          {name: cocktail.strIngredient2, measurement: null},
+        ].filter(ingredients => ingredients.name),
       }));
+
+      console.log("Cocktail Data:", cocktailData); // Log cocktail data here
+
+      // Add logging to output the value of cocktailId
+      cocktailData.forEach(cocktail => {
+        console.log('Cocktail ID:', cocktail.cocktailId);
+      });
 
       setSearchedCocktails(cocktailData);
       setSearchInput('');
@@ -75,28 +72,34 @@ const SearchCocktails = () => {
     }
   };
 
-  // create function to handle saving a cocktail to our database
   const handleSaveCocktail = async (cocktailId) => {
-    // find the cocktail in `searchedCocktails` state by the matching id
-    const cocktailToSave = searchedCocktails.find((cocktail) => cocktail.cocktailId === cocktailId);
-
-    // get token
+    const cocktailToSave = searchedCocktails.find(cocktail => cocktail.cocktailId === cocktailId);
     const token = Auth.loggedIn() ? Auth.getToken() : null;
 
     if (!token) {
       return false;
     }
 
+    // Log cocktailToSave object just before the mutation call
+  console.log("Cocktail to Save:", cocktailToSave);
+
     try {
+      // const ingredients = cocktailToSave.ingredients.map(({ name, measurement }) => ({ name, measurement }));
+      const ingredients = cocktailToSave.ingredients.map(({ name, measurement }) => ({ name, measurement }));
+
+
+      console.log("Saving Cocktail Data:", cocktailToSave); // Log cocktail to save here
+
       const { data } = await saveCocktail({
-        variables: { cocktailData: { ...cocktailToSave } },
+        variables: { cocktailData: { ...cocktailToSave, ingredients } },
       });
-     
+
       setSavedCocktailIds([...savedCocktailIds, cocktailToSave.cocktailId]);
     } catch (err) {
       console.error(err);
     }
   };
+
   return (
     <>
       <div className="text-light bg-dark p-5">
@@ -145,7 +148,7 @@ const SearchCocktails = () => {
                   <Card.Body>
                     <Card.Title>{cocktail.name}</Card.Title>
                     <p className="small">Category: {cocktail.category}</p>
-                    <p className="small">Alcoholic: {cocktail.alcoholic}</p>
+                    <p className="small">Alcoholic: {cocktail.alcoholic ? 'Alcoholic' : 'Non-Alcoholic'}</p>
                     <p className="small">Glass: {cocktail.glass}</p>
                     <Card.Text>{cocktail.instructions}</Card.Text>
                     {Auth.loggedIn() && (

@@ -39,6 +39,16 @@ const resolvers = {
     },
     saveCocktail: async (parent, { cocktailData }, context) => {
       if (context.user) {
+        // Log cocktailData before mutation call
+        console.log("Cocktail Data received:", cocktailData);
+        // Ensure that cocktailId is not null and is included in cocktailData
+        if (!cocktailData.cocktailId) {
+          throw new Error('Cocktail ID is missing or null');
+        }
+
+        // Log context.user._id to ensure it's retrieved correctly
+    console.log("User ID:", context.user._id);
+    
         const updatedUser = await User.findByIdAndUpdate(
           { _id: context.user._id },
           { $push: { savedCocktails: cocktailData } },

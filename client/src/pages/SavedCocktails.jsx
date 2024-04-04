@@ -46,7 +46,7 @@ const SavedCocktails = () => {
 
   return (
     <>
-      <div fluid className="text-light bg-dark p-5">
+      <div className="text-light bg-dark p-5 fluid">
         <Container>
           <h1>Viewing {userData.username}'s saved cocktails!</h1>
         </Container>
@@ -62,8 +62,8 @@ const SavedCocktails = () => {
           <Row>
             {userData.savedCocktails?.map((cocktail) => {
               return (
-                <Col md="4">
-                  <Card key={cocktail.cocktailId} border="dark">
+                <Col md="4" key={cocktail.cocktailId}>
+                  <Card border="dark">
                     {cocktail.image ? (
                       <Card.Img
                         src={cocktail.image}
@@ -72,9 +72,9 @@ const SavedCocktails = () => {
                       />
                     ) : null}
                     <Card.Body>
-                      <Card.Title>{cocktail.title}</Card.Title>
+                      <Card.Title>{cocktail.name}</Card.Title>
                       <p className="small">Category: {cocktail.category}</p>
-                      <p className="small">Alcoholic: {cocktail.alcoholic}</p>
+                      <p className="small">Alcoholic: {cocktail.alcoholic ? 'Yes' : 'No'}</p>
                       <p className="small">Glass: {cocktail.glass}</p>
                       <Card.Text>{cocktail.instructions}</Card.Text>
                       <Button

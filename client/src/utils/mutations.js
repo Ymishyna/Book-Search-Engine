@@ -34,8 +34,13 @@ export const SAVE_COCKTAIL = gql`
         cocktailId
         name
         category
-        instructions
+        alcoholic
         glass
+        instructions
+        ingredients {
+          name
+          measurement
+        }
         image
       }
     }

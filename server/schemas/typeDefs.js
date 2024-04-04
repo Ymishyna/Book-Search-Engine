@@ -8,7 +8,7 @@ const typeDefs = `
   }
 
   type Cocktail {
-    cocktailId: ID!
+    cocktailId: String!
     name: String!
     category: String
     alcoholic: Boolean
@@ -29,6 +29,7 @@ const typeDefs = `
   }
 
   input CocktailInput {
+    cocktailId: String!
     name: String!
     category: String
     alcoholic: Boolean!
@@ -51,7 +52,7 @@ const typeDefs = `
     login(email: String!, password: String!): Auth
     addUser(username: String!, email: String!, password: String!): Auth
     saveCocktail(cocktailData: CocktailInput!): User
-    removeCocktail(cocktailId: ID!): User
+    removeCocktail(cocktailId: String!): User
   }
 `;
 
