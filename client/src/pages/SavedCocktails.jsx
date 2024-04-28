@@ -60,9 +60,9 @@ const SavedCocktails = () => {
         </h2>
         <div>
           <Row>
-            {userData.savedCocktails?.map((cocktail) => {
+            {userData.savedCocktails?.map((cocktail) => { 
               return (
-                <Col md="4" key={cocktail.cocktailId}>
+                <Col md="4" key={cocktail.cocktailId}> 
                   <Card border="dark">
                     {cocktail.image ? (
                       <Card.Img

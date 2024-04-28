@@ -17,7 +17,7 @@ const SearchCocktails = () => {
   const [searchedCocktails, setSearchedCocktails] = useState([]);
   const [searchInput, setSearchInput] = useState('');
   const [savedCocktailIds, setSavedCocktailIds] = useState(getSavedCocktailIds());
-  const [saveCocktail, { error }] = useMutation(SAVE_COCKTAIL);
+  const [saveCocktail, { error }] = useMutation(SAVE_COCKTAIL); // this is never been called
 
   useEffect(() => {
     return () => saveCocktailIds(savedCocktailIds);
@@ -36,15 +36,34 @@ const SearchCocktails = () => {
       );
 
       if (!response.ok) {
-        throw new Error('something went wrong!');
+        throw new error('something went wrong!'); 
       }
 
       const { drinks } = await response.json();
 
       console.log("Data fetched from API:", drinks); // Log data fetched from API
 
+      // const cocktailData = drinks.map((cocktail) => ({
+      //   cocktailId: cocktail.idDrink ? cocktail.idDrink : 'UNKNOWN_ID',
+      //   name: cocktail.strDrink,
+      //   category: cocktail.strCategory,
+      //   alcoholic: cocktail.strAlcoholic === "Alcoholic",
+      //   glass: cocktail.strGlass,
+      //   instructions: cocktail.strInstructions,
+      //   image: cocktail.strDrinkThumb || '',
+      //   ingredients: [
+      //     {name: cocktail.strIngredient0, measurement: null},
+      //     {name: cocktail.strIngredient1, measurement: null},
+      //     {name: cocktail.strIngredient2, measurement: null},
+      //     {name: cocktail.strIngredient3, measurement: null},
+      //     {name: cocktail.strIngredient4, measurement: null},
+      //     {name: cocktail.strIngredient5, measurement: null},
+      //     {name: cocktail.strIngredient6, measurement: null}, 
+      //   ].filter(ingredients => ingredients.name),
+      // })); OLD VERSION
+
       const cocktailData = drinks.map((cocktail) => ({
-        cocktailId: cocktail.idDrink || '', // Add null check here
+        cocktailId: cocktail.idDrink || 'UNKNOWN_ID', // Assign 'UNKNOWN_ID' if cocktail.idDrink is null or undefined
         name: cocktail.strDrink,
         category: cocktail.strCategory,
         alcoholic: cocktail.strAlcoholic === "Alcoholic",
@@ -52,17 +71,31 @@ const SearchCocktails = () => {
         instructions: cocktail.strInstructions,
         image: cocktail.strDrinkThumb || '',
         ingredients: [
-          {name: cocktail.strIngredient0, measurement: null},
-          {name: cocktail.strIngredient1, measurement: null},
-          {name: cocktail.strIngredient2, measurement: null},
-        ].filter(ingredients => ingredients.name),
+          { name: cocktail.strIngredient1, measurement: cocktail.strMeasure1 },
+          { name: cocktail.strIngredient2, measurement: cocktail.strMeasure2 },
+          { name: cocktail.strIngredient3, measurement: cocktail.strMeasure3 },
+          { name: cocktail.strIngredient4, measurement: cocktail.strMeasure4 },
+          { name: cocktail.strIngredient5, measurement: cocktail.strMeasure5 },
+          { name: cocktail.strIngredient6, measurement: cocktail.strMeasure6 },
+          { name: cocktail.strIngredient7, measurement: cocktail.strMeasure7 },
+          { name: cocktail.strIngredient8, measurement: cocktail.strMeasure8 },
+          { name: cocktail.strIngredient9, measurement: cocktail.strMeasure9 },
+          { name: cocktail.strIngredient10, measurement: cocktail.strMeasure10 },
+          { name: cocktail.strIngredient11, measurement: cocktail.strMeasure11 },
+          { name: cocktail.strIngredient12, measurement: cocktail.strMeasure12 },
+          { name: cocktail.strIngredient13, measurement: cocktail.strMeasure13 },
+          { name: cocktail.strIngredient14, measurement: cocktail.strMeasure14 },
+          { name: cocktail.strIngredient15, measurement: cocktail.strMeasure15 }
+        ].filter(ingredient => ingredient.name && ingredient.name.trim() !== ''), // Filter out null or empty ingredient names
       }));
+      
+      
 
       console.log("Cocktail Data:", cocktailData); // Log cocktail data here
 
       // Add logging to output the value of cocktailId
       cocktailData.forEach(cocktail => {
-        console.log('Cocktail ID:', cocktail.cocktailId);
+        console.log('Cocktail ID:', cocktail.cocktailId); 
       });
 
       setSearchedCocktails(cocktailData);
@@ -76,7 +109,7 @@ const SearchCocktails = () => {
     const cocktailToSave = searchedCocktails.find(cocktail => cocktail.cocktailId === cocktailId);
     const token = Auth.loggedIn() ? Auth.getToken() : null;
 
-    if (!token) {
+    if (!token || !cocktailToSave) { 
       return false;
     }
 
@@ -84,13 +117,12 @@ const SearchCocktails = () => {
   console.log("Cocktail to Save:", cocktailToSave);
 
     try {
-      // const ingredients = cocktailToSave.ingredients.map(({ name, measurement }) => ({ name, measurement }));
       const ingredients = cocktailToSave.ingredients.map(({ name, measurement }) => ({ name, measurement }));
 
 
       console.log("Saving Cocktail Data:", cocktailToSave); // Log cocktail to save here
 
-      const { data } = await saveCocktail({
+      await saveCocktail({
         variables: { cocktailData: { ...cocktailToSave, ingredients } },
       });
 
